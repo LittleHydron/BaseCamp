@@ -2,24 +2,32 @@
 
 #define CONNECTION
 
-#include <boost/asio.hpp>
-#include <boost/bind/bind.hpp>
+#include <iostream>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
 
-using namespace boost::asio;
+#define DEFAULT_BUFLEN 512
 
 class Connection {
 private:
-    io_service *io;
-    ip::tcp::socket *socket;
-    ip::tcp::resolver *resolver;
-    ip::tcp::acceptor *acceptor;
+    WSADATA wsadata;
+    SOCKET socketFD;
+
 public:
-    Connection(const int);
-    Connection(const char *, const char *);
-    std::string receive(void);
-    void send(const std::string);
-    void wait_for(const int);
+    Connection() : socketFD(INVALID_SOCKET) {
+        if (WSAStartup(MAKEWORD(2, 2), &wsadata)) {
+            std::cerr << "WSAStartup failed!" << std::endl;
+        }
+    }
+    bool Initialize(const char *, const char *);
+    bool InitializeServer(const char *);
+    bool AcceptConnection(void);
+    bool Send(const char *);
+    bool Receive(char *, int);
+    void Close(void);
     ~Connection(void);
 };
+
 
 #endif

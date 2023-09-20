@@ -1,42 +1,28 @@
-CC = g++
-CFLAGS = -std=c++17 -Wall -Wextra
-LDFLAGS = -lX11 -lboost_system -lboost_thread
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall
+LDFLAGS = -lws2_32
 
-# Directories
-SRC_DIR = src
-BUILD_DIR = build
-BIN_DIR = bin
+CLIENT_OBJS = obj/client.o obj/Connection.o obj/TrackMouse.o
+SERVER_OBJS = obj/server.o obj/Connection.o obj/TrackMouse.o
 
-# Include directories
-INCLUDE_DIRS = -I$(SRC_DIR) -I$(SRC_DIR)/network -I.
+all: bin/client bin/server
 
-# Source files
-CLIENT_SRC = $(wildcard $(SRC_DIR)/client.cpp $(SRC_DIR)/network/*.cpp)
-SERVER_SRC = $(wildcard $(SRC_DIR)/server.cpp $(SRC_DIR)/network/*.cpp)
+bin/client: $(CLIENT_OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-# Object files
-CLIENT_OBJ = $(CLIENT_SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-SERVER_OBJ = $(SERVER_SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+bin/server: $(SERVER_OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-# Targets
-CLIENT_TARGET = $(BIN_DIR)/client
-SERVER_TARGET = $(BIN_DIR)/server
+obj/%.o: src/network/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-.PHONY: all clean
+obj/%.o: src/platform/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-all: $(CLIENT_TARGET) $(SERVER_TARGET)
-
-$(CLIENT_TARGET): $(CLIENT_OBJ)
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) $(CLIENT_OBJ) -o $@ $(LDFLAGS)
-
-$(SERVER_TARGET): $(SERVER_OBJ)
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) $(SERVER_OBJ) -o $@ $(LDFLAGS)
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+obj/%.o: src/%.cpp
+	$(CXX) $(CXXFLAGS) -Isrc/network -Isrc/platform -c -o $@ $<
 
 clean:
-	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	rm -f bin/client bin/server $(CLIENT_OBJS) $(SERVER_OBJS)
+
+.PHONY: all clean

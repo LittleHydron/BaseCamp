@@ -1,22 +1,24 @@
 #include <iostream>
-#include <boost/asio.hpp>
 #include "Connection.hpp"
 
-int main(void) {
-    Connection connection(5577);
-    std::cout << "Server listening on port 5577..." << std::endl;
+int main() {
+    Connection server;
 
-    while (true) {
-        std::string received;
-        try {
-            received = connection.receive();
-        } catch (boost::system::system_error &error) {
-            std::cout << error.what() << std::endl;
-            break;
+    // Initialize the server to listen on port 5577
+    if (server.InitializeServer("5577")) {
+        std::cout << "Server is listening on port 5577. Waiting for messages..." << std::endl;
+
+        if (server.AcceptConnection()) {
+            char buffer[DEFAULT_BUFLEN];
+            while (server.Receive(buffer, sizeof(buffer))) {
+                std::cout << "Received from client: " << buffer << std::endl;
+            }
+        } else {
+            std::cerr << "Failed to accept client connection." << std::endl;
         }
-
-        std::cout << "Received: " << received << std::endl;
+        server.Close();
+    } else {
+        std::cerr << "Failed to initialize server." << std::endl;
     }
-
     return 0;
 }
