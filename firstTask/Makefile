@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall
 LDFLAGS =
 
-ifeq ($(UNAME), MINGW32_NT-6.2)
+ifeq ($(OS), Windows_NT)
     LDFLAGS += -lws2_32
 else
 	LDFLAGS += -lX11
