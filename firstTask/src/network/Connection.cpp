@@ -24,7 +24,7 @@ bool Connection::Initialize(const char* serverIP, const char* serverPort) {
     freeaddrinfo(result);
 
     if (iResult == SOCKET_ERROR) {
-        std::cerr << "Unable to connect to server!" << std::endl;
+        std::cerr << "Unable to connect" << std::endl;
         Close();
         return false;
     }
@@ -95,7 +95,7 @@ bool Connection::Receive(char* buffer, int bufferSize) {
         buffer[iResult] = '\0';
         return true;
     } else if (iResult == 0) {
-        std::cerr << "Connection closed by server." << std::endl;
+        std::cerr << "Connection closed." << std::endl;
     } else {
         std::cerr << "recv failed" << std::endl;
     }

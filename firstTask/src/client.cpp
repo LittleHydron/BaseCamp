@@ -25,6 +25,7 @@ int main() {
                 sent = client.Send("Active");
             }
             lastX = x, lastY = y;
+            std::cout << "Current position: " << x << ' ' << y << '\n';
         } while(sent);
         client.Close();
     } else {
