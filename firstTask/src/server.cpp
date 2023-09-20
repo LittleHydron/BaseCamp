@@ -1,17 +1,18 @@
 #include <iostream>
 #include "Connection.hpp"
 
+#define PORT "5577"
+#define MESSAGE_LENGTH 8
+
 int main() {
     Connection server;
-
-    // Initialize the server to listen on port 5577
-    if (server.InitializeServer("5577")) {
-        std::cout << "Server is listening on port 5577. Waiting for messages..." << std::endl;
+    if (server.InitializeServer(PORT)) {
+        std::cout << "Server is listening on port " <<  atoi(PORT) << ". Waiting for messages..." << std::endl;
 
         if (server.AcceptConnection()) {
-            char buffer[DEFAULT_BUFLEN];
-            while (server.Receive(buffer, sizeof(buffer))) {
-                std::cout << "Received from client: " << buffer << std::endl;
+            char message[DEFAULT_BUFLEN];
+            while (server.Receive(message, sizeof(message))) {
+                std::cout << message << std::endl;
             }
         } else {
             std::cerr << "Failed to accept client connection." << std::endl;

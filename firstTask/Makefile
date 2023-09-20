@@ -1,7 +1,12 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall
-LDFLAGS = -lws2_32
+LDFLAGS =
 
+ifeq ($(UNAME), MINGW32_NT-6.2)
+    LDFLAGS += -lws2_32
+else
+	LDFLAGS += -lX11
+endif
 CLIENT_OBJS = obj/client.o obj/Connection.o obj/TrackMouse.o
 SERVER_OBJS = obj/server.o obj/Connection.o obj/TrackMouse.o
 
