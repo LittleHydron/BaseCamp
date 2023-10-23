@@ -7,10 +7,20 @@
 #include "StringTools.h"
 
 void printLine(QPlainTextEdit *resultWindow, std::string S) {
+    /*
+    
+    This function prints a line of text into QPlainTextEdit
+    
+    */
     resultWindow->appendPlainText(QString::fromStdString(S));
 }
 
 QString MainWindow::getActiveFont(void) {
+    /*
+    
+    This method returns settings of the currently active font
+    
+    */
     switch(activeFont) {
     case 1:
         return "\
@@ -38,6 +48,11 @@ QString MainWindow::getActiveFont(void) {
 }
 
 void MainWindow::saveTheme(void) {
+    /*
+    
+    This method saves active color and font themes into file to use it later.
+    
+    */
     std::ofstream out;
     out.open("theme.conf");
     out << activeTheme << ' ' << activeFont;
@@ -45,24 +60,24 @@ void MainWindow::saveTheme(void) {
 }
 
 void MainWindow::loadTheme(void) {
+    /*
+    
+    This method loads last used theme from file.
+    
+    */
     std::ifstream in;
     in.open("theme.conf");
     in >> activeTheme >> activeFont;
     in.close();
-    switch(activeTheme) {
-    case 1:
-        setFirstTheme();
-        break;
-    case 2:
-        setSecondTheme();
-        break;
-    case 3:
-        setThirdTheme();
-        break;
-    }
+    reloadTheme();
 }
 
 void MainWindow::reloadTheme(void) {
+    /*
+    
+    This method changes UI according to chosen theme.
+    
+    */
     switch(activeTheme) {
     case 1:
         setFirstTheme();
@@ -76,8 +91,13 @@ void MainWindow::reloadTheme(void) {
     }
 }
 
+/*
+    
+    These 3 methods set fonts for main window.
+    
+*/
+
 void MainWindow::setFirstFont(void) {
-    activeFont = 1;
     this->setStyleSheet("\
         font-family: roboto;\
         font-size: 16px;\
@@ -112,6 +132,12 @@ void MainWindow::setThirdFont(void) {
     saveTheme();
 }
 
+/*
+
+These 3 methods change fonts.
+
+*/
+
 void MainWindow::on_actionCucumber_triggered(void) {
     setFirstFont();
     processFiles();
@@ -127,6 +153,12 @@ void MainWindow::on_actionMemory_triggered(void) {
     processFiles();
 }
 
+/*
+
+These 3 methods set color theme for window
+
+*/
+
 void MainWindow::setFirstTheme(void) {
     activeTheme = 1;
     saveTheme();
@@ -136,7 +168,6 @@ void MainWindow::setFirstTheme(void) {
     this->setStyleSheet(getActiveFont() + "background-color: white; color: black;");
     ui->fileText1->setStyleSheet(getActiveFont() + "background-color: white; color: black;");
     ui->fileText2->setStyleSheet(getActiveFont() + "background-color: white; color: black;");
-//    ui->resultWindow->setStyleSheet(getActiveFont() + "background-color: white; color: black;");
     ui->openFileButton1->
             setStyleSheet(getActiveFont() + "\
           background: #FF4742;\
@@ -172,7 +203,6 @@ void MainWindow::setSecondTheme(void) {
     this->setStyleSheet(getActiveFont() + "background-color: #948B89; color: black;");
     ui->fileText1->setStyleSheet(getActiveFont() + "background-color: #948B89; color: black;");
     ui->fileText2->setStyleSheet(getActiveFont() + "background-color: #948B89; color: black;");
-//    ui->resultWindow->setStyleSheet(getActiveFont() + "background-color: #948B89; color: black;");
     ui->openFileButton1->
         setStyleSheet(getActiveFont() + "\
           color: #fff\
@@ -200,7 +230,6 @@ void MainWindow::setThirdTheme(void) {
     this->setStyleSheet(getActiveFont() + "background-color: white; color: black;");
     ui->fileText1->setStyleSheet(getActiveFont() + "background-color: #bbd1ea; color: black;");
     ui->fileText2->setStyleSheet(getActiveFont() + "background-color: #bbd1ea; color: black;");
-//    ui->resultWindow->setStyleSheet(getActiveFont() + "background-color: #bbd1ea; color: black;");
     ui->openFileButton1->
           setStyleSheet(getActiveFont() + "\
             background: blue;\
@@ -228,6 +257,12 @@ void MainWindow::setThirdTheme(void) {
             text-transform: none;\
         ");
 }
+
+/*
+
+These 3 methods are called when color theme is chosen
+
+*/
 
 void MainWindow::on_actionLight_Libra_2_triggered(void) {
     setFirstTheme();
@@ -258,10 +293,14 @@ MainWindow::MainWindow(QWidget *parent):
     loadTheme();
     ui->fileText1->setReadOnly(true);
     ui->fileText2->setReadOnly(true);
-//    ui->resultWindow->setReadOnly(true);
 }
 
 void MainWindow::readFile(std::vector<std::string> &dest, QLabel *label, QPlainTextEdit *textEdit) {
+    /*
+    
+    Method that reads file and writes its lines into the 'dest' vector and displays content and name in the textEdit and Label.
+    
+    */
     QString fileName = QFileDialog::getOpenFileName(this, tr("Select file"), "C://");
     if (fileName == "") {
         return;
@@ -279,6 +318,12 @@ void MainWindow::readFile(std::vector<std::string> &dest, QLabel *label, QPlainT
     textEdit->setPlainText(tr(fileContent.c_str()));
 }
 
+/*
+
+These two methods are called when "open file" buttons are clicked.
+
+*/
+
 void MainWindow::on_openFileButton1_clicked(void) {
     readFile(file1Content, ui->fileName1, ui->fileText1);
     processFiles();
@@ -289,17 +334,49 @@ void MainWindow::on_openFileButton2_clicked(void) {
     processFiles();
 }
 
+// This macro defines end of the PlainTextEdit where result of processing is displayed.
 #define END_OF_PLAIN_TEXT ui->fileText1->toPlainText().size()
 
 void MainWindow::processFiles(void) {
+    /*
+    
+    This method finds the difference between opened files and displays it in the left window.
+    
+    */
     if (ui->fileName1->text() == "" || ui->fileName2->text() == "") {
         return;
     }
     ui->fileText1->setPlainText("");
     std::vector < int > whiteRows1, whiteRows2, yellowRows1, yellowRows2;
+    /*
+    
+    whiteRows are rows that are part of LCS of these files.
+    They will have no color.
+
+    yellowRows are rows that are "changed".
+    Two rows are yellow, if they are not the same, but their coefficient of similarity is at least 6.
+
+    whiteRows1 and yellowRows1 refer to the first file, and whiteRows2 and yellowRows2 refer to the second one.
+    
+    */
     StringTools::findLCS(file1Content, file2Content, &whiteRows1, &whiteRows2);
     int white = 0, i = 0, j = 0;
+    /*
+    
+    'white' will store index of previous white line
+    'i' will store index of current line of the first file
+    'j' will store index of current line of the second file
+    
+    */
     while(i < file1Content.size() && j < file2Content.size()) {
+        /*
+        
+        In this cycle we decide, which rows will be yellow.
+
+        We don't have to worry that in some time 'white + 1' can exceed whiteRows1.size(),
+            because we added 'dummy' elements in the "StringTools::findLCS" function
+        
+        */
         i = whiteRows1[white] + 1;
         j = whiteRows2[white] + 1;
         for (; i < whiteRows1[white+1]; ++ i) {
@@ -318,11 +395,21 @@ void MainWindow::processFiles(void) {
         }
         ++ white;
     }
+    /*
+    
+    Here we again add 'dummy' elements into yellowRows1 and yellowRows2 for convenience
+    
+    */
     yellowRows1.push_back(file1Content.size());
     yellowRows2.push_back(file2Content.size());
     white = 1, j = 0, i = 0;
     int yellow = 0;
     int position = 0;
+    /*
+    
+    Here we print out difference of files into left window of app. 
+    
+    */
     while(i < file1Content.size()) {
         position = END_OF_PLAIN_TEXT;
         if (i == whiteRows1[white] && j == whiteRows2[white]) {

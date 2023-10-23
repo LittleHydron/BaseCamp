@@ -22,6 +22,14 @@ QString StringTools::extractFileName(QString &path) {
 }
 
 int StringTools::coefficient(std::string &str1, std::string &str2) {
+    /*
+    
+    This function computes 'similarity coefficient' of two strings.
+
+    It is used to determine, how similar these strings are (from 0 to 10).
+    The bigger it is, the less number of changes is needed to recieve one string from another.
+    
+    */
     if (str1.length() == 0) {
         if (str2.length() == 0) {
             return 10;

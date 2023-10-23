@@ -18,6 +18,11 @@ public:
     ~MainWindow();
 
 private slots:
+/*
+
+These mathods will be called after clicking buttons.
+
+*/
     void on_openFileButton1_clicked(void);
     void on_openFileButton2_clicked(void);
     void on_actionLight_Libra_2_triggered(void);
