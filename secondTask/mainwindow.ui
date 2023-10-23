@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>914</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>File Comparator</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="openFileButton1">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>500</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="text">
+     <string>Open file</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="fileText1">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>40</y>
+      <width>451</width>
+      <height>451</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fileName1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>201</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fileName2">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>10</y>
+      <width>201</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="fileText2">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>40</y>
+      <width>451</width>
+      <height>451</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="openFileButton2">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>500</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="text">
+     <string>Open file</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>914</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuThemes">
+    <property name="title">
+     <string>Themes</string>
+    </property>
+    <widget class="QMenu" name="colorThemes">
+     <property name="title">
+      <string>Color themes</string>
+     </property>
+     <addaction name="actionLight_Libra_2"/>
+     <addaction name="actionDark_Sepia_2"/>
+     <addaction name="actionLight_Lagoona_2"/>
+    </widget>
+    <widget class="QMenu" name="menuFont_themes">
+     <property name="title">
+      <string>Font themes</string>
+     </property>
+     <addaction name="actionWally"/>
+     <addaction name="actionMemory"/>
+     <addaction name="actionCucumber"/>
+    </widget>
+    <addaction name="colorThemes"/>
+    <addaction name="menuFont_themes"/>
+   </widget>
+   <addaction name="menuThemes"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionDark_Sepia">
+   <property name="text">
+    <string>Dark Sepia</string>
+   </property>
+  </action>
+  <action name="actionLight_Lagoona">
+   <property name="text">
+    <string>Light Lagoona</string>
+   </property>
+  </action>
+  <action name="actionLight_Libra_2">
+   <property name="text">
+    <string>Light Libra</string>
+   </property>
+  </action>
+  <action name="actionDark_Sepia_2">
+   <property name="text">
+    <string>Dark Sepia</string>
+   </property>
+  </action>
+  <action name="actionLight_Lagoona_2">
+   <property name="text">
+    <string>Light Lagoona</string>
+   </property>
+  </action>
+  <action name="actionWally">
+   <property name="text">
+    <string>Wally</string>
+   </property>
+  </action>
+  <action name="actionMemory">
+   <property name="text">
+    <string>Memory</string>
+   </property>
+  </action>
+  <action name="actionCucumber">
+   <property name="text">
+    <string>Cucumber</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
