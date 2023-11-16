@@ -1,5 +1,6 @@
-CXX = g++
+CXX = gcc
 CXXFLAGS = -std=c++17 -Wall
+LDFLAGS = -lstdc++
 
 SNIFFER_OBJS = obj/sniffer.o obj/main.o
 
