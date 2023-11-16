@@ -16,16 +16,11 @@
 
 class Sniffer {
     int raw_socket;
-    struct in_addr local_ip_address;
     std::map<int, std::string> protocol_names;
-    std::map<std::string, int> incoming_protocol_counts;
-    std::map<std::string, int> outgoing_protocol_counts;
-    std::map<std::string, uint64_t> incoming_protocol_summary;
-    std::map<std::string, uint64_t> outgoing_protocol_summary;
-
+    std::map<std::string, int> total_protocol_counts;
+    std::map<std::string, uint64_t> total_protocol_summary;
     void clear_console(void);
     void print_protocol_counts(void);
-
 public:
     Sniffer(void);
     void process_packet(const unsigned char *, int);
