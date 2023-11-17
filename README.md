@@ -16,7 +16,7 @@ Task:
 
 
 How to run this application:
-Run "make" command in "thirdTask" diractory to build project.
+Run "make" command in "thirdTask" directory to build project.
 
 
 Run "./bin/sniffer" command to run application.
