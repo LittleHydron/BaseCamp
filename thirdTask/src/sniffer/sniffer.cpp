@@ -27,7 +27,6 @@ Sniffer::Sniffer(void) : raw_socket(socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL)
     protocol_names[IPPROTO_ICMP] = "ICMP";
     for (const auto &entry : protocol_names) {
         total_protocol_counts[entry.second] = 0;
-        total_protocol_counts[entry.second] = 0;
     }
 }
 
